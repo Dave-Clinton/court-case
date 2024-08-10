@@ -91,21 +91,12 @@ WSGI_APPLICATION = 'myclient.wsgi.application'
 
 
 
-
-
-
 DATABASES = {
-   'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'backendcourse',
-        'USER': 'mysuperuser1',
-        'PASSWORD': 'masizacreatives!3',
-        'HOST': 'databasecourse.c9q80s0oet0v.eu-north-1.rds.amazonaws.com',  # or the address of your database server
-        'PORT': '5432',  # default port for PostgreSQL
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
 
 
 
