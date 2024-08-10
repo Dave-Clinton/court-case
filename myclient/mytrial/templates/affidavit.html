@@ -1,0 +1,19 @@
+
+
+{% include 'navbar.html' %}
+
+{% block content %}
+<h1>Create PassTicket for {{ case_file.tenant }}</h1>
+<form method="post" action="{% url 'create_pass_ticket' case_file.id %}">
+    {% csrf_token %}
+    <textarea name="content" id="content" placeholder="Enter PassTicket content" required></textarea><br>
+    <button type="submit">Create PassTicket</button>
+</form>
+
+<!-- Include CKEditor library -->
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+</script>
+
+{% endblock %}

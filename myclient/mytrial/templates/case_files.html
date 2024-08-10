@@ -1,0 +1,159 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Parties</title>
+    <style>
+        /* Navbar styles */
+        .navbar {
+            margin-bottom: 20px; /* Adds space below the navbar */
+        }
+
+        /* Container styles */
+        .container101 {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container101 h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form styles */
+        .modal-body {
+            padding: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-y: auto;
+            max-height: 80vh; /* Limits height to 80% of the viewport height */
+        }
+
+        .modal-body form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-body label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .modal-body input,
+        .modal-body select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-body button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        .modal-body button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .modal-body {
+                padding: 10px;
+            }
+
+            .container101 h1 {
+                font-size: 20px;
+            }
+
+            .modal-body input,
+            .modal-body select {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container101 h1 {
+                font-size: 18px;
+            }
+
+            .modal-body input,
+            .modal-body select {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body style="overflow: hidden;">
+    {% include 'navbar.html' %}   
+    <li><a href="{% url 'home' %}"> Back </a> </li>
+
+    <div class="container101">
+        <h1>Case Parties, Litigants, and Interested Parties</h1>
+
+    </div>
+
+    <div class="modal-body">
+        <form method="POST" action="{% url 'case_files' %}">
+            {% csrf_token %}
+            <div>
+                <label for="party_type">Party Type:</label>
+                <input type="text" id="party_type" name="party_type" required>
+            </div>
+            <div>
+                <label for="party_level">Party Level:</label>
+                <input type="text" id="party_level" name="party_level" required>
+            </div>
+            <div>
+                <label for="case_party_type">Case Party Type:</label>
+                <input type="text" id="case_party_type" name="case_party_type" required>
+            </div>
+            <div>
+                <label for="organization_name">Organization Name:</label>
+                <input type="text" id="organization_name" name="organization_name" required>
+            </div>
+            <div>
+                <label for="kra_pin">KRA PIN:</label>
+                <input type="text" id="kra_pin" name="kra_pin" required>
+            </div>
+            <div>
+                <label for="postal_address">Postal Address:</label>
+                <textarea id="postal_address" name="postal_address" required></textarea>
+            </div>
+            <div>
+                <label for="physical_location">Physical Location:</label>
+                <textarea id="physical_location" name="physical_location" required></textarea>
+            </div>
+            <div>
+                <label for="mobile_number">Mobile Number:</label>
+                <input type="text" id="mobile_number" name="mobile_number" required>
+            </div>
+            <div>
+                <label for="organization_email">Organization Email:</label>
+                <input type="email" id="organization_email" name="organization_email" required>
+            </div>
+            <div>
+                <button type="submit">Create Case File</button>
+            </div>
+        </form>
+        
+
+
+
+           
+    </div>
+</body>
+</html>
+{% endblock %}

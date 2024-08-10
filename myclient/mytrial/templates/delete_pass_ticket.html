@@ -1,0 +1,11 @@
+
+{% block content %}
+<h1>Delete PassTicket for {{ ticket.case_file.tenant }}</h1>
+<p>Are you sure you want to delete this PassTicket?</p>
+<form method="post" action="{% url 'delete_pass_ticket' ticket.id %}">
+    {% csrf_token %}
+    <button type="submit" name="confirm" value="yes">Yes, Delete</button>
+    <a href="{% url 'review_dashboard' %}">Cancel</a>
+</form>
+
+{% endblock %}

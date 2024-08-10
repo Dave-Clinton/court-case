@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Ticket Detail</title>
+    <style>
+    
+.btn,
+.ticket-details {
+  pointer-events: auto; 
+}
+
+/* Responsive design */
+body {
+  margin: 0;
+  padding: 20px;
+}
+
+.ticket-details {
+  background-color: #f5f5f5; /* Light gray background for content area */
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 800px; /* Limit content width for larger screens */
+  margin: 0 auto; /* Center content horizontally */
+}
+
+.btn-primary {
+  background-color: transparent; /* Colorless background */
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #333; /* Text color */
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #eee; /* Light gray hover effect */
+}
+
+.btn-enabled { /* New class for enabled export button */
+  border-color: #007bff; /* Blue border for enabled button */
+  color: #007bff; 
+}
+
+
+
+
+
+
+        /* Prevent text selection and right-click globally */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none; /* Prevent all pointer events */
+        }
+
+        /* Allow interaction with specific elements */
+        .btn-primary {
+            pointer-events: auto; /* Enable pointer events for buttons */
+            user-select: text; /* Allow text selection within buttons if needed */
+        }
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            font-size: 5rem;
+            color: #000;
+            pointer-events: none; /* Ensure watermark does not block interaction */
+            z-index: 1000;
+            user-select: none;
+        }
+
+        /* Prevent printing */
+        @media print {
+            body {
+                display: none;
+            }
+        }
+      /*  .btn-disabled {
+    pointer-events: none; /* Prevent clicking */
+    /*opacity: 0.5;  Make the button appear disabled */
+    
+
+    </style>
+    
+</head>
+<body>
+    <div class="screenshot-overlay"></div>
+    <div class="watermark">Confidential</div>
+   <div class="ticket-details">
+    <h1>Ticket Details</h1>
+    <p><strong>Content:</strong> {{ ticket.content | striptags }}</p>
+    <p><strong>Created:</strong> {{ ticket.created_at }}</p>
+    <div class="button-container">
+ 
+    <a  id="export-btn" href="{% url 'export_ticket_to_word' ticket.id %}" class="btn-primary btn-disabled">Export as Word</a>
+
+    <a  id="payment-btn" href="{% url 'make_payment' ticket.id %}" class="btn-primary ">Make Payment</a>
+   
+    {% if user.profile.is_admin %}
+        <a href="{% url 'dashboard' %}" class="btn-primary">Back to Dashboard</a>
+    {% else %}
+        <a href="{% url 'homeland' %}" class="btn-primary">Back to Home</a>
+    {% endif %}
+   </div>
+   </div>
+    <script>
+        // Check if payment has been made
+        const paymentMade = "{{ request.session.payment_made|default_if_none:'false' }}" === "True";
+        const exportBtn = document.getElementById('export-btn');
+    
+        if (paymentMade) {
+            exportBtn.classList.remove('btn-disabled');
+            exportBtn.classList.add('btn-primary');
+            exportBtn.style.pointerEvents = 'auto';
+            
+        }
+    </script>
+    
+</body>
+</html>
