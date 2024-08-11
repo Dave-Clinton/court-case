@@ -297,8 +297,8 @@ h1 {
 						<thead>
 
 							<tr>
-								<th>Client Name</th>
 								<th>Case ID</th>
+                                <th>Client Name</th>
 								<th>Date Created</th>
                                 <th>Status</th>
                                 <th>Case File</th>
@@ -310,8 +310,8 @@ h1 {
                             {% for case_file in case_files %}
 
 							<tr>
-								<td>{{ case_file.user.profile.first_name  }}</td>
                                 <td>{{ case_file.id }}</td>
+                                <td>{{ case_file.user.profile.first_name  }}</td>
                                 <td>{{ case_file.created_at }}</td>
                                 <td>
                                     {% if case_file.status == 'in_revision' %}
