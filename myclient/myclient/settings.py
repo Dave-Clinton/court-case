@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-)rpq4jvhujouna8(je@+r_6n3#$uv@ezky@6f38t%!^f0od#9o
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False# Ensure this is set to False in production
+DEBUG = True# Ensure this is set to False in production
 import os
 # Set allowed hosts for development
 
@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*' ,'cout-order.onrender.com']
 
 # Set the SITE_URL based on the DEBUG value
 if DEBUG:
-    SITE_URL = 'http://127.0.0.1:8000'
+    SITE_URL = ['http://127.0.0.1:8000', 'http://13.60.180.5:8000/']
 else:
     SITE_URL = 'http://13.60.180.5:8000/'
 

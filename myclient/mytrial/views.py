@@ -59,8 +59,9 @@ def register(request):
         if password == password2:
             if User.objects.filter(email=email).exists():
                 messages.error(request, 'Email is already taken')
-            elif len(password) < 8 or not any(char.isdigit() for char in password) or not any(char.isalpha() for char in password) or not any(char.islower() for char in password) or not any(char.isupper() for char in password):
-                messages.error(request, 'Password must be at least 8 characters long, contain both numbers and letters, and have both lowercase and uppercase letters')
+            elif len(password) < 6 or not any(char.isdigit() for char in password) or not any(char.isalpha() for char in password):
+                messages.error(request, 'Password must be at least 6 characters long and contain both numbers and letters')
+        
             else:
                 is_admin = email in settings.ADMIN_EMAILS
                 user = User.objects.create_user(username=email, email=email, password=password)  # Create a regular user
