@@ -254,9 +254,10 @@ def delete_profile(request):
 #home data delivery view
 @login_required
 def homeland(request):
-    case_files = CaseFile.objects.all()
+    case_files = CaseFile.objects.filter(user=request.user)
     
-    completed_cases = CaseFile.objects.filter(status='completed')
+    
+    completed_cases = CaseFile.objects.filter(user=request.user, status='completed')
     case_tickets = []
     for case in completed_cases:
         tickets = PassTicket.objects.filter(case_file=case)
