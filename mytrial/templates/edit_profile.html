@@ -1,0 +1,100 @@
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login For Html Css</title>
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+ <style>
+    .btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: blue;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+  
+ </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="login-form">
+        {% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div  style="color:red;" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+        <div class="container">
+            <div class="main">
+                <div class="content">
+                    
+                    <form method="POST" action="{% url 'edit_profile' %}">
+                        {% csrf_token %}
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ profile.first_name }}" required><br>
+        
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ profile.last_name }}" required><br>
+        
+                        <label for="phone_number">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" value="{{ profile.phone_number }}" required><br>
+        
+                        <label for="gender">Gender:</label>  
+                        <input type="text" id="gender" name="gender" value="{{ profile.gender }}" required><br>
+
+        
+                        <label for="county">County:</label>
+                        <input type="text" id="county" name="county" value="{{ profile.county }}" required><br>
+        
+                        <button type="submit" class="btn-submit">Edit Profile</button>
+                        <a href="{% url 'homeland' %}" class="btn-back">Back</a>
+
+                    </form>
+                                       
+                </div>
+                <div class="form-img">
+                    <img src="{%static 'images/bg.png'%}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+{% endblock %}
+
+
+<script>
+    // Automatically fade out messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 1000); // Fade out takes 1 second, then hide the element
+            }, 5000); // Show for 5 seconds before starting to fade out
+        });
+    });
+
+
+</script>
+
+
