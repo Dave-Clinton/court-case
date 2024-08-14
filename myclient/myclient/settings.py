@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,11 +25,11 @@ SECRET_KEY = 'django-insecure-)rpq4jvhujouna8(je@+r_6n3#$uv@ezky@6f38t%!^f0od#9o
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True# Ensure this is set to False in production
+DEBUG = False# Ensure this is set to False in production
 import os
 # Set allowed hosts for development
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*' ,'cout-order.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
 
 # Set the SITE_URL based on the DEBUG value
 if DEBUG:
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'whitenoise.runserver_nonstatic',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',  
@@ -93,14 +93,17 @@ WSGI_APPLICATION = 'myclient.wsgi.application'
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+#DATABASES = {
+   # 'default': {
+      ##  'ENGINE': 'django.db.backends.sqlite3',
+      #  'NAME': BASE_DIR / 'db.sqlite3',
+   # }
+#}
+
+DATABASES ={
+
+    'default': dj_database_url.parse('postgresql://production_db_jlrm_user:tkhh6KIR0fn0SDhvWrWND0D7vZTKeXYa@dpg-cqudqu3qf0us73ab3pa0-a.oregon-postgres.render.com/production_db_jlrm')
 }
-
-
 
 
 
