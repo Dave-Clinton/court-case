@@ -419,7 +419,7 @@ def details(request):
 
 
 
-def create_pass_ticket(request, case_file_id):
+#def create_pass_ticket(request, case_file_id):
     case_file = get_object_or_404(CaseFile, id=case_file_id)
     
     if request.method == 'POST':
@@ -428,6 +428,32 @@ def create_pass_ticket(request, case_file_id):
         case_file.status = 'in_review'
         case_file.save()
         return redirect('dashboard')
+
+    context = {'case_file': case_file}
+    return render(request, 'affidavit.html', context)
+
+
+
+    return render(request, 'affidavit.html', context)
+
+
+
+
+def create_pass_ticket(request, case_file_id):
+    case_file = get_object_or_404(CaseFile, id=case_file_id)
+    
+    if request.method == 'POST':
+        if 'document' in request.FILES:
+            document = request.FILES['document']
+            PassTicket.objects.create(case_file=case_file, document=document)
+            case_file.status = 'in_review'
+            case_file.save()
+            return redirect('dashboard')
+        else:
+            return render(request, 'affidavit.html', {
+                'case_file': case_file,
+                'error': 'Please upload a valid document.',
+            })
 
     context = {'case_file': case_file}
     return render(request, 'affidavit.html', context)

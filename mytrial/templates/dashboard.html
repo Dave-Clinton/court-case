@@ -96,6 +96,9 @@ h1 {
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
+    <title>Legal Solution</title>
+    <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
+
 	<link rel="stylesheet" href="{% static 'css/style.css'%}">
     <style>
         
@@ -339,7 +342,9 @@ h1 {
                                         <div>
                                             <a href="{% url 'ticket_detail' ticket.id %}"> Petition Link</a>
                                             {% if case_file.status == 'in_revision' %}
-                                                <a href="{% url 'edit_pass_ticket' ticket.id %}" class="action-btn edit">Edit</a>
+                                            <p>delete and Upload A new word file</p>
+                                                <a href="{% url 'create_pass_ticket' case_file.id %}">Create Petition</a>
+
                                                 <a href="{% url 'delete_pass_ticket' ticket.id %}" class="action-btn delete">Delete</a>
                                             {% endif %}
                                         </div>

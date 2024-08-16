@@ -64,7 +64,8 @@ class CaseFile(models.Model):
 
 class PassTicket(models.Model):
     case_file = models.ForeignKey(CaseFile, on_delete=models.CASCADE)
-    content = models.TextField()
+    document = models.FileField(upload_to='pass_tickets/', null=True, blank=True) 
+    document_pdf = models.FileField(upload_to='pass_tickets/pdf/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

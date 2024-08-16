@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)rpq4jvhujouna8(je@+r_6n3#$uv@ezky@6f38t%!^f0od#9o
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False# Ensure this is set to False in production
+DEBUG = True# Ensure this is set to False in production
 import os
 # Set allowed hosts for development
 
@@ -33,9 +33,9 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
 
 # Set the SITE_URL based on the DEBUG value
 if DEBUG:
-    SITE_URL = 'https://instantfile.org'
+    SITE_URL = 'http://13.60.180.5:8000'
 else:
-    SITE_URL = 'https://instantfile.org'
+    SITE_URL = 'http://13.60.180.5:8000'
 
 print(f'DEBUG is set to {DEBUG}. Site URL is set to {SITE_URL}')
 
@@ -146,6 +146,10 @@ STATIC_URL = 'static/'
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type

@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Review Dashboard</title>
+    <title>Legal Solution</title>
+    <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
+
+
     <style>
      body {
     font-family: Arial, sans-serif;
@@ -260,7 +263,7 @@ h1 {
                                         <td colspan="6" id="ticket-actions">
                                             {% for ticket in case_file.passticket_set.all %}
                                                 <div>
-                                                    <a href="{% url 'ticket_detail' ticket.id %}"> Petition </a>
+                                                    <a href="{% url 'ticket_detail' ticket.id %}"> Ticket document</a>
             
                                                     <td>
                                                         <form method="post" action="{% url 'update_pass_ticket_status' ticket.id %}">

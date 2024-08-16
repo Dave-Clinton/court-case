@@ -101,11 +101,13 @@ body {
     <div class="watermark">Confidential</div>
    <div class="ticket-details">
     <h1>Ticket Details</h1>
-    <p><strong>Content:</strong> {{ ticket.content | striptags }}</p>
+    <p>
+      <a href="{{ ticket.document.url }}" class="btn-primary btn-disabled" download="{{ ticket.document.name }}">Download Document</a>
+  </p>
     <p><strong>Created:</strong> {{ ticket.created_at }}</p>
     <div class="button-container">
  
-    <a  id="export-btn" href="{% url 'export_ticket_to_word' ticket.id %}" class="btn-primary btn-disabled">Export as Word</a>
+    <!--<a  id="export-btn" href="{% url 'export_ticket_to_word' ticket.id %}" class="btn-primary btn-disabled">Export as Word</a>-->
 
     <a  id="payment-btn" href="{% url 'make_payment' ticket.id %}" class="btn-primary ">Make Payment</a>
    

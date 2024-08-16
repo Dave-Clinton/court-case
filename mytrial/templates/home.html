@@ -4,6 +4,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Solution</title>
+    <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
+
 
 	<!-- Boxicons -->
 
@@ -180,7 +183,7 @@
                                             {% if item.tickets %}
                                                 <ul>
                                                     {% for ticket in item.tickets %}
-                                                    <a href="{% url 'ticket_detail' ticket.id %}"> Petition </a>                       
+                                                    <a href="{% url 'ticket_detail' ticket.id %}"> Ticket Document </a>                       
                                                     {% empty %}
                                                         <li>No tickets available.</li>
                                                     {% endfor %}
@@ -214,9 +217,6 @@
 						</tbody>
 					</table>
 				</div>
-
-	
-            
 		</main>
 		<!-- MAIN -->
 	</section>
