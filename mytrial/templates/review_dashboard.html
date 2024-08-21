@@ -208,6 +208,9 @@ h1 {
     color: #007bff; /* Change to your preferred hover color */
 }
 
+th{
+    padding:30px;
+}
 
     </style>
     </head>
@@ -375,26 +378,19 @@ h1 {
                                       
                                         <td>
                                             {% for ticket in case_file.passticket_set.all %}
-
-                                            <a href="{% url 'ticket_detail' ticket.id %}" class="view-case">  <i class="fas fa-eye"></i></a>
+                                            <a href="{% url 'ticket_detail' ticket.id %}" class="view-case"><i class="fas fa-eye"></i></a>
                                             {% endfor %}
-
                                         </td>
                                         <td colspan="6" id="ticket-actions">
                                             {% for ticket in case_file.passticket_set.all %}
-                                                <div>
-                                                    <td>
                                                         <form method="post" action="{% url 'update_pass_ticket_status' ticket.id %}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
                                                             <button type="submit" name="action" value="complete"  id="completeBtn" class="button-action button-complete" onclick="markAsComplete()">Complete</button>
                                                              <button type="submit" name="action" value="revision" id="revisionBtn" class="button-action button-revision">Send to Revision</button>
 
-                                                        
+                
                                                         </form>
-                                                    </td>
-                                                    
-                                                </div>
                                             {% endfor %}
                                         </td>
                                     </tr>
