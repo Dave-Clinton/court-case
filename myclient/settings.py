@@ -33,9 +33,9 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
 
 # Set the SITE_URL based on the DEBUG value
 if DEBUG:
-    SITE_URL = 'http://13.60.180.5:8000'
+    SITE_URL = 'https://instantfile.org'
 else:
-    SITE_URL = 'http://13.60.180.5:8000'
+    SITE_URL = 'https://instantfile.org'
 
 print(f'DEBUG is set to {DEBUG}. Site URL is set to {SITE_URL}')
 

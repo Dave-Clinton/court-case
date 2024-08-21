@@ -252,8 +252,8 @@ def delete_profile(request):
 
 
 #home data delivery view
-@login_required
-def homeland(request):
+
+#def homeland(request):
     case_files = CaseFile.objects.filter(user=request.user)
     
     
@@ -274,6 +274,49 @@ def homeland(request):
     }
     
     return render(request, 'home.html', context)
+
+
+
+
+
+@login_required
+def homeland(request):
+    # Retrieve query parameters
+    case_id = request.GET.get('case_id', '')
+    first_name = request.GET.get('first_name', '')
+    form_type = request.GET.get('form_type', '')
+    user_type = request.GET.get('user_type', '')
+
+    # Filter case files based on query parameters
+    case_files = CaseFile.objects.filter(user=request.user)
+    if case_id:
+        case_files = case_files.filter(case_id__icontains=case_id)
+    if first_name:
+        case_files = case_files.filter(user__profile__first_name__icontains=first_name)
+    if form_type:
+        case_files = case_files.filter(station__icontains=form_type)
+    if user_type:
+        case_files = case_files.filter(user_type__icontains=user_type)
+
+    # Filter completed cases and gather associated tickets and payments
+    completed_cases = case_files.filter(status='completed')
+    case_tickets = []
+    for case in completed_cases:
+        tickets = PassTicket.objects.filter(case_file=case)
+        payments = Payment.objects.filter(ticket__in=tickets)
+        case_tickets.append({
+            'case': case,
+            'tickets': tickets,
+            'payments': payments,
+        })
+
+    context = {
+        'case_files': case_files,
+        'case_tickets': case_tickets,
+    }
+    
+    return render(request, 'home.html', context)
+
 
 
 #ticket details
@@ -300,12 +343,11 @@ def case_detail(request, case_id):
 def export_case_to_word(request, case_id):
     case = get_object_or_404(CaseFile, id=case_id)
     document = Document()
-    document.add_heading(f'Case Details for {case.tenant}', 0)
+    document.add_heading(f'Case Details for {case.user_type}', 0)
 
-    document.add_paragraph(f'Tenant: {case.tenant}')
+    document.add_paragraph(f'User_type: {case.user_type}')
     document.add_paragraph(f'Postal Address: {case.postal_address}')
     document.add_paragraph(f'Telephone Number: {case.telephone_number}')
-    document.add_paragraph(f'Landlord Name: {case.landlord_name}')
     document.add_paragraph(f'Agent: {case.agent}')
     document.add_paragraph(f'Caretaker: {case.caretaker}')
     document.add_paragraph(f'Auctioneer: {case.auctioneer}')
@@ -339,19 +381,8 @@ def export_ticket_to_word(request, ticket_id):
     return response
 
 
+
 #def dashboard(request):
-    #case_files = CaseFile.objects.filter(user=request.user)
-    case_files = CaseFile.objects.select_related('user').filter(user=request.user)
-
-    pass_tickets = PassTicket.objects.filter(case_file__in=case_files)
-    
-    context = {
-        'case_files': case_files,
-        'pass_tickets': pass_tickets,
-    }
-    return render(request, 'dashboard.html', context)
-
-def dashboard(request):
       # Retrieve all case files and corresponding pass tickets
     case_files = CaseFile.objects.all()  # No filtering by user
     pass_tickets = PassTicket.objects.filter(case_file__in=case_files)
@@ -369,6 +400,38 @@ def dashboard(request):
 
 
 
+def dashboard(request):
+    # Initialize the queryset
+    case_files = CaseFile.objects.all()
+
+    # Get filter parameters from the request
+    case_id = request.GET.get('case_id')
+    first_name = request.GET.get('first_name', '')
+    form_type = request.GET.get('form_type')
+    user_type = request.GET.get('user_type')
+
+    # Apply filters if provided
+    if case_id:
+        case_files = case_files.filter(id=case_id)
+    if first_name:
+        case_files = case_files.filter(user__profile__first_name__icontains=first_name)
+    if form_type:
+        case_files = case_files.filter(ocs_police_station__icontains=form_type)
+    if user_type:
+        case_files = case_files.filter(user_type__icontains=user_type)
+
+    # Retrieve the pass tickets for the filtered case files
+    pass_tickets = PassTicket.objects.filter(case_file__in=case_files)
+    
+    context = {
+        'case_files': case_files,
+        'pass_tickets': pass_tickets,
+    }
+
+    return render(request, 'dashboard.html', context)
+
+
+
 
 
 
@@ -376,45 +439,63 @@ def dashboard(request):
 @login_required
 def details(request):
     if request.method == 'POST':
-        tenant = request.POST.get('tenant')
-        postal_address = request.POST.get('postal_address')
-        telephone_number = request.POST.get('telephone_number')
-        landlord_name = request.POST.get('landlord_name')
-        agent = request.POST.get('agent', '')
-        caretaker = request.POST.get('caretaker', '')
-        auctioneer = request.POST.get('auctioneer', '')
-        duration_of_stay = request.POST.get('duration_of_stay', '')
-        monthly_rent = request.POST.get('monthly_rent', '')
-        year_of_entry = request.POST.get('year_of_entry', '')
-        deposit_paid = request.POST.get('deposit_paid', '')
-        cause_of_action = request.POST.get('cause_of_action', '')
-        problem = request.POST.get('problem', '')
-        ocs_police_station = request.POST.get('ocs_police_station', '')
+        input_option = request.POST.get('input_option')
+        form_type = request.POST.get('form_type')
 
-        case_file = CaseFile(
-            tenant=tenant,
-            postal_address=postal_address,
-            telephone_number=telephone_number,
-            landlord_name=landlord_name,
-            agent=agent,
-            caretaker=caretaker,
-            auctioneer=auctioneer,
-            duration_of_stay=duration_of_stay,
-            monthly_rent=monthly_rent,
-            year_of_entry=year_of_entry,
-            deposit_paid=deposit_paid,
-            cause_of_action=cause_of_action,
-            problem=problem,
-            ocs_police_station=ocs_police_station,
-            status='in_progress',
-            created_at=timezone.now()
-        )
-        case_file.user = request.user
+        if input_option == 'upload':
+            # Handle document upload
+            file_upload = request.FILES.get('file_upload')
+            if file_upload:
+                case_file = CaseFile(
+                    user=request.user,
+                    file_upload=file_upload,
+                    form_type=form_type,
+                    status='in_progress',
+                    created_at=timezone.now()
+                )
+                case_file.save()
+                return redirect('homeland')  # Adjust the redirect as needed
+        else:
+            # Handle manual form submission
+            user_type = request.POST.get('user_type')
+            postal_address = request.POST.get('postal_address')
+            telephone_number = request.POST.get('telephone_number')
+            agent = request.POST.get('agent', '')
+            caretaker = request.POST.get('caretaker', '')
+            auctioneer = request.POST.get('auctioneer', '')
+            duration_of_stay = request.POST.get('duration_of_stay', '')
+            monthly_rent = request.POST.get('monthly_rent', '')
+            year_of_entry = request.POST.get('year_of_entry', '')
+            deposit_paid = request.POST.get('deposit_paid', '')
+            cause_of_action = request.POST.get('cause_of_action', '')
+            problem = request.POST.get('problem', '')
+            ocs_police_station = request.POST.get('ocs_police_station', '')
 
-        case_file.save()
-        return redirect('homeland')  # Adjust the redirect as needed
+            case_file = CaseFile(
+                user=request.user,
+                user_type=user_type,
+                postal_address=postal_address,
+                telephone_number=telephone_number,
+                agent=agent,
+                caretaker=caretaker,
+                auctioneer=auctioneer,
+                duration_of_stay=duration_of_stay,
+                monthly_rent=monthly_rent,
+                year_of_entry=year_of_entry,
+                deposit_paid=deposit_paid,
+                cause_of_action=cause_of_action,
+                problem=problem,
+                form_type=form_type,
+                ocs_police_station=ocs_police_station,
+                status='in_progress',
+                created_at=timezone.now()
+
+            )
+            case_file.save()
+            return redirect('homeland')  # Adjust the redirect as needed
 
     return render(request, 'details.html')
+
 
 
 
@@ -473,7 +554,7 @@ def update_pass_ticket_status(request, ticket_id):
     return redirect('review_dashboard')
 
 
-def review_dashboard(request):
+#def review_dashboard(request):
       # Retrieve all case files and corresponding pass tickets
     case_files = CaseFile.objects.all()  # No filtering by user
     pass_tickets = PassTicket.objects.filter(case_file__in=case_files)
@@ -496,6 +577,51 @@ def review_dashboard(request):
         case_file.save()
 
     return render(request, 'review_dashboard.html', context)
+
+
+
+def review_dashboard(request):
+    # Retrieve query parameters
+    case_id = request.GET.get('case_id', '')
+    first_name = request.GET.get('first_name', '')
+    form_type = request.GET.get('form_type', '')
+    user_type = request.GET.get('user_type', '')
+
+    # Filter case files based on query parameters
+    case_files = CaseFile.objects.all()
+    if case_id:
+        case_files = case_files.filter(case_id__icontains=case_id)
+    if first_name:
+        case_files = case_files.filter(user__profile__first_name__icontains=first_name)
+
+    if form_type:
+        case_files = case_files.filter(station__icontains=form_type)
+    if user_type:
+        case_files = case_files.filter(user_type__icontains=user_type)
+
+    # Retrieve pass tickets related to filtered case files
+    pass_tickets = PassTicket.objects.filter(case_file__in=case_files)
+    
+    context = {
+        'case_files': case_files,
+        'pass_tickets': pass_tickets,
+    }
+
+    if request.method == 'POST':
+        ticket_id = request.POST.get('ticket_id')
+        action = request.POST.get('action')
+        ticket = get_object_or_404(PassTicket, id=ticket_id)
+        case_file = ticket.case_file
+
+        if action == 'complete':
+            case_file.status = 'completed'
+        elif action == 'revision':
+            case_file.status = 'in_revision'
+
+        case_file.save()
+
+    return render(request, 'review_dashboard.html', context)
+
 
 #delete ticket
 def delete_pass_ticket(request, ticket_id):

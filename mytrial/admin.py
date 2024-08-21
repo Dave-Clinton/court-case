@@ -14,10 +14,9 @@ class ProfileAdmin(admin.ModelAdmin):
 
 class CaseFileAdmin(admin.ModelAdmin):
     list_display = (
-        'tenant', 
+        'user_type', 
         'postal_address', 
         'telephone_number', 
-        'landlord_name', 
         'agent', 
         'caretaker', 
         'auctioneer', 
@@ -27,8 +26,10 @@ class CaseFileAdmin(admin.ModelAdmin):
         'deposit_paid', 
         'cause_of_action', 
         'problem', 
+         'file_upload', 
         'ocs_police_station', 
         'status', 
+        'form_type',
         'created_at'
     )
     search_fields = (

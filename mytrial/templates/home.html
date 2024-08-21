@@ -4,9 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Solution</title>
+    <title>Instantfile</title>
     <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
-
 
 	<!-- Boxicons -->
 
@@ -14,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- ===============--- tailwind and daisy ui link ---=============== -->
 <link href="https://cdn.jsdelivr.net/npm/daisyui@3.4.0/dist/full.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- ===============--- font awesome link ---=============== -->
@@ -21,15 +22,68 @@
 
 	<!-- My CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+    #filter-section {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
+#filter-section form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
+#filter-section form div {
+    flex: 1 1 200px; /* Flex-grow, flex-shrink, and flex-basis */
+    min-width: 150px; /* Minimum width for smaller screens */
+}
+
+#filter-section form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#filter-section form input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+#filter-section .btn {
+    align-self: center;
+}
+/* Add this CSS to your stylesheet */
+.view-case {
+    display: inline-block;
+    color: #333; /* Change to your preferred color */
+    text-decoration: none;
+    font-size: 1.5em; /* Adjust size as needed */
+}
+
+.view-case i {
+    vertical-align: middle;
+}
+
+/* Optionally, add hover effects */
+.view-case:hover {
+    color: #007bff; /* Change to your preferred hover color */
+}
+
+</style>
 	<title>techhub</title>
 </head>
 <body>
 
     {% if user.profile.is_admin %}
     <a href="{% url 'dashboard' %}" class="btn">Admin Dashboard</a>
-    <a href="#" class="btn">review Dashboard</a>
+    <a href="{% url 'review_dashboard' %}" class="btn">review Dashboard</a>
     {% else %}
 
 	<!-- SIDEBAR -->
@@ -137,6 +191,33 @@
             <h1>Dashboard</h1>                      
 
             </table>
+
+
+            <section id="filter-section">
+                <form method="get" action="{% url 'homeland' %}">
+                    <h3>Search for Case file based on:</h3>
+                    <div>
+                        <label for="case_id">Case ID:</label>
+                        <input type="text" id="case_id" name="case_id" value="{{ request.GET.case_id }}">
+                    </div>
+                    <div>
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ request.GET.first_name }}">
+                    </div>
+                    <div>
+                        <label for="station">Station:</label>
+                        <input type="text" id="form_type" name="form_type" value="{{ request.GET.form_type }}">
+                    </div>
+                    <div>
+                        <label for="user_type">User Type:</label>
+                        <input type="text" id="user_type" name="user_type" value="{{ request.GET.user_type }}">
+                    </div>
+                    <button type="submit" class="btn">Filter</button>
+                </form>
+            </section>
+
+
+
             <div class="table-data">
 				<div class="order">
 					<div class="head">
@@ -148,10 +229,11 @@
 						<thead>
 							<tr>
 								<th>Order ID </th>
+                                <th>Station</th>
+                                <th>User_type</th>
 								<th>Status</th>
                                 <th>Created at</th>
-                                <th>Case File</th>
-                                <th> Petition</th>
+                                <th> Applications</th>
                                 <th>Payment History</th>
                               
 
@@ -160,8 +242,22 @@
 						<tbody>
                             {% for case in case_files %}
 
-							<tr>
+                            <tr class="clickable-row" data-href="{% url 'case_detail' case_file.id %}">
+
                                 <td>{{ case.id }}</td>
+                                <td>
+                                    {{ case.form_type }} <!-- Display the form_type field -->
+                                </td>
+                                <td>
+                                    {% if case.user_type == 'tenant' %}
+                                        Tenant
+                                    {% elif case.user_type == 'landlord' %}
+                                        Landlord
+                                    {% else %}
+                                        Unknown
+                                    {% endif %}
+                                </td>
+                                
                                 <td>
                                     {% if case.status == 'in_revision' %}
                                         <button class="button-status button-revision" id="button-revision">{{ case.status }}</button>
@@ -174,16 +270,14 @@
                                     {% endif %}
                                 </td>
                                 <td>{{ case.created_at }}</td>
-                                <td>
-                                    <a href="{% url 'case_detail' case.id %}">Case File</a>
-                                </td>
+                               
                                 <td>
                                     {% for item in case_tickets %}
                                         {% if item.case.id == case.id %}
                                             {% if item.tickets %}
                                                 <ul>
                                                     {% for ticket in item.tickets %}
-                                                    <a href="{% url 'ticket_detail' ticket.id %}"> Ticket Document </a>                       
+                                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case">  <i class="fas fa-eye"></i> </a>                       
                                                     {% empty %}
                                                         <li>No tickets available.</li>
                                                     {% endfor %}
@@ -225,6 +319,26 @@
     {% endif %}
 
 	<script>
+         document.addEventListener('DOMContentLoaded', function () {
+    // Attach click event to all rows with the class 'clickable-row'
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+        row.addEventListener('click', function() {
+            // Get the URL from the data-href attribute
+            window.location.href = row.getAttribute('data-href');
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
         
         allSideMenu.forEach(item=> {

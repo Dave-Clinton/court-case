@@ -10,7 +10,7 @@
 <form method="post" action="{% url 'create_pass_ticket' case_file.id %}" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="document" id="document" accept=".doc,.docx,.pdf" required><br><br>
-    <button type="submit">Upload PassTicket</button>
+    <button type="submit">Upload Application</button>
 </form>
 
 {% endblock %}

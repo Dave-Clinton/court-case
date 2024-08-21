@@ -31,17 +31,18 @@
                 <div class="content">
                     <form method="post" action="{% url 'register' %}" >
                         {% csrf_token %}
-                        <input type="text" id="first_name"name="first_name" placeholder="First Name" required autofocus="">
-                        <input type="text" id="last_name" name="last_name"  placeholder="Last Name" required>
-                            <input type="email" id="email" name="email" placeholder="email" required>
+                        <input type="text" id="first_name"name="first_name" placeholder="First Name" value="{{ form.first_name.value }}"required autofocus="">
+                        <input type="text" id="last_name" name="last_name"  placeholder="Last Name" value="{{ form.last_name.value }}" required>
+                            <input type="email" id="email" name="email" placeholder="email" value="{{ form.email.value }}" required>
                             <input type="password" id="password" name="password" placeholder="password" required>
                             <input type="password" name="password2" id="password2" placeholder="Repeat Password" required>
-                            <input type="number" name="phone_number" id="phone_number"  placeholder="phone number" required>
+                            <input type="number" name="phone_number" id="phone_number"  placeholder="phone number"  value="{{ form.phone_number.value }}" required>
+                           
                             <select name="gender" id="gender" required>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                                <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Male</option>
+                                <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Female</option>
                             </select>
-                            <input type="text" name="county" id="county" placeholder="county" required>
+                            <input type="text" name="county" id="county" placeholder="county" value="{{ form.county.value }}" required>
                          <button class="btn" type="submit">
                             Register
                          </button>

@@ -6,35 +6,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Case File Detail</title>
+    <style>
+      /* Basic Reset */
+body, h1, p, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.details {
+    padding: 0 20px;
+}
+
+.details p {
+    margin: 10px 0;
+}
+
+.details .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-download {
+    background-color: #28a745;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.navigation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .details {
+        padding: 0;
+    }
+}
+
+    </style>
+
 </head>
 <body>
-
-    <h1>Case File Details</h1>
-
-    <p><strong>Tenant:</strong> {{ case.tenant }}</p>
-    <p><strong>Postal Address:</strong> {{ case.postal_address }}</p>
-    <p><strong>Telephone Number:</strong> {{ case.telephone_number }}</p>
-    <p><strong>Landlord Name:</strong> {{ case.landlord_name }}</p>
-    <p><strong>Agent:</strong> {{ case.agent }}</p>
-    <p><strong>Caretaker:</strong> {{ case.caretaker }}</p>
-    <p><strong>Auctioneer:</strong> {{ case.auctioneer }}</p>
-    <p><strong>Duration of Stay:</strong> {{ case.duration_of_stay }}</p>
-    <p><strong>Monthly Rent:</strong> {{ case.monthly_rent }}</p>
-    <p><strong>Year of Entry:</strong> {{ case.year_of_entry }}</p>
-    <p><strong>Deposit Paid:</strong> {{ case.deposit_paid }}</p>
-    <p><strong>Cause of Action:</strong> {{ case.cause_of_action }}</p>
-    <p><strong>Problem:</strong> {{ case.problem }}</p>
-    <p><strong>O.C.S. Police Station:</strong> {{ case.ocs_police_station }}</p>
-    <p><strong>Status:</strong> {{ case.status }}</p>
-    <p><strong>Created At:</strong> {{ case.created_at }}</p>
-    <a href="{% url 'export_case_to_word' case.id %}" class="btn btn-primary">Export as Word</a>
-
-    {% if user.profile.is_admin %}
-        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
-     {% else %}
-        <a href="{% url 'homeland' %}">Back to Home</a>
-     {% endif %}
-    
-
+    <div class="container">
+        <h1>Case File Details</h1>
+        <div class="details">
+            <p><strong>Name:</strong> {{ case.user.profile.first_name }}</p>
+            <p><strong>Case Type:</strong> {{ case.form_type }}</p>
+            {% if case.document %}
+                <p><strong>Uploaded Document:</strong> 
+                <a href="{{ case.document.url }}" download="{{ case.document.name }}" class="btn btn-download">Download Document</a></p>
+            {% else %}
+                <p><strong>User Type:</strong> {{ case.user_type }}</p>
+                <p><strong>Postal Address:</strong> {{ case.postal_address }}</p>
+                <p><strong>Telephone Number:</strong> {{ case.telephone_number }}</p>
+                <p><strong>Agent:</strong> {{ case.agent }}</p>
+                <p><strong>Caretaker:</strong> {{ case.caretaker }}</p>
+                <p><strong>Auctioneer:</strong> {{ case.auctioneer }}</p>
+                <p><strong>Duration of Stay:</strong> {{ case.duration_of_stay }}</p>
+                <p><strong>Monthly Rent:</strong> {{ case.monthly_rent }}</p>
+                <p><strong>Year of Entry:</strong> {{ case.year_of_entry }}</p>
+                <p><strong>Deposit Paid:</strong> {{ case.deposit_paid }}</p>
+                <p><strong>Cause of Action:</strong> {{ case.cause_of_action }}</p>
+                <p><strong>Problem:</strong> {{ case.problem }}</p>
+                <p><strong>O.C.S. Police Station:</strong> {{ case.ocs_police_station }}</p>
+                <p><strong>Status:</strong> {{ case.status }}</p>
+                <p><strong>Created At:</strong> {{ case.created_at }}</p>
+                <a href="{% url 'export_case_to_word' case.id %}" class="btn btn-primary">Export as Word</a>
+            {% endif %}
+        </div>
+        <div class="navigation">
+            {% if user.profile.is_admin %}
+                <a href="{% url 'dashboard' %}" class="btn btn-back">Back to Dashboard</a>
+            {% else %}
+                <a href="{% url 'homeland' %}" class="btn btn-back">Back to Home</a>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

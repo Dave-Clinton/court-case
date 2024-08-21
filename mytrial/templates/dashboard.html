@@ -1,10 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+    <title>Instantfile</title>
+    <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
     <style>
+        
 .container {
     width: 90%;
     margin: 0 auto;
@@ -80,28 +91,6 @@ h1 {
 }
 
  
-
-        
-    </style>
-</head>
-   
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-    <title>Legal Solution</title>
-    <link rel="icon" type="image/png" href="{% static 'images/business.png' %}"/>
-
-	<link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <style>
-        
         
         #complete {
             background-color: #28a745;
@@ -195,6 +184,97 @@ h1 {
 }
 }
 
+/* Flex container for the filter section */
+#filter-section {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between items */
+}
+
+/* Styling for individual filter form elements */
+#filter-section form div {
+    flex: 1 1 auto; /* Allow items to grow and shrink as needed */
+    min-width: 150px; /* Minimum width for each input */
+}
+
+/* Label styling */
+#filter-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Input styling */
+#filter-section input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Button styling */
+#filter-section button {
+    flex: 1 1 auto; /* Button adjusts with the content */
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Button hover effect */
+#filter-section button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (min-width: 600px) {
+    #filter-section {
+        flex-direction: row; /* Align items horizontally on medium screens */
+    }
+    #filter-section form div {
+        flex: 1 1 45%; /* Two items per row with some margin */
+    }
+    #filter-section button {
+        flex: 1 1 100%; /* Full width on small screens */
+    }
+}
+
+@media (min-width: 900px) {
+    #filter-section {
+        flex-direction: row; /* Ensure row direction on large screens */
+    }
+    #filter-section form div {
+        flex: 1 1 22%; /* Four items per row on larger screens */
+    }
+}
+ 
+/* Add this CSS to your stylesheet */
+.view-case {
+    display: inline-block;
+    color: #333; /* Change to your preferred color */
+    text-decoration: none;
+    font-size: 1.5em; /* Adjust size as needed */
+}
+
+.view-case i {
+    vertical-align: middle;
+}
+
+/* Optionally, add hover effects */
+.view-case:hover {
+    color: #007bff; /* Change to your preferred hover color */
+}
+
+
  </style>
     
     
@@ -287,7 +367,33 @@ h1 {
 				</li>
 			</ul>
                    
-                      
+
+                   <!-- Filter Form -->
+    <!-- Filter Section -->
+<section id="filter-section">
+    <form method="get" action="{% url 'dashboard' %}">
+        <h3>Search for Case file based on:</h3>
+        <div>
+            <label for="case_id">Case ID:</label>
+            <input type="text" id="case_id" name="case_id" value="{{ request.GET.case_id }}">
+        </div>
+        <div>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" value="{{ request.GET.first_name }}">
+        </div>
+        <div>
+            <label for="form_type">Station:</label>
+            <input type="text" id="form_type" name="form_type" value="{{ request.GET.form_type }}">
+        </div>
+        <div>
+            <label for="user_type">User Type:</label>
+            <input type="text" id="user_type" name="user_type" value="{{ request.GET.user_type }}">
+        </div>
+        <button type="submit" class="btn">Filter</button>
+    </form>
+</section>
+
+
 
             <div class="table-data">
 				<div class="order">
@@ -302,19 +408,30 @@ h1 {
 							<tr>
 								<th>Case ID</th>
                                 <th>Client Name</th>
+                                <th>Station</th>
+                                <th>User_type</th>
 								<th>Date Created</th>
                                 <th>Status</th>
-                                <th>Case File</th>
                                 <th>Actions</th>
-                                <th>Petition</th>
+                                <th>Applications</th>
 							</tr>
 						</thead>
 						<tbody>
                             {% for case_file in case_files %}
+                            <tr class="clickable-row" data-href="{% url 'case_detail' case_file.id %}">
 
-							<tr>
                                 <td>{{ case_file.id }}</td>
                                 <td>{{ case_file.user.profile.first_name  }}</td>
+                                <td> {{ case.form_type }} </td>
+                                <td>
+                                    {% if case.user_type == 'tenant' %}
+                                        Tenant
+                                    {% elif case.user_type == 'landlord' %}
+                                        Landlord
+                                    {% else %}
+                                        Unknown
+                                    {% endif %}
+                                </td>
                                 <td>{{ case_file.created_at }}</td>
                                 <td>
                                     {% if case_file.status == 'in_revision' %}
@@ -327,12 +444,10 @@ h1 {
                                         <button class="button-status button-completed" id="button-completed">{{ case_file.status }}</button>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    <a href="{% url 'case_detail' case_file.id %}">View Case File</a>
-                                </td>
+                                
                                  <td>
                                         {% if case_file.status == 'in_progress' %}
-                                            <a href="{% url 'create_pass_ticket' case_file.id %}">Create Petition</a>
+                                            <a href="{% url 'create_pass_ticket' case_file.id %}">Create Application</a>
                                          {%else%}
                                            Petition Created
                                         {% endif %}
@@ -340,10 +455,9 @@ h1 {
                                  <td colspan="6">
                                     {% for ticket in case_file.passticket_set.all %}
                                         <div>
-                                            <a href="{% url 'ticket_detail' ticket.id %}"> Petition Link</a>
+                                            <a href="{% url 'ticket_detail' ticket.id %}" class="view-case">  <i class="fas fa-eye"></i></a>
                                             {% if case_file.status == 'in_revision' %}
-                                            <p>delete and Upload A new word file</p>
-                                                <a href="{% url 'create_pass_ticket' case_file.id %}">Create Petition</a>
+                                                <a href="{% url 'create_pass_ticket' case_file.id %}">Create Application</a>
 
                                                 <a href="{% url 'delete_pass_ticket' ticket.id %}" class="action-btn delete">Delete</a>
                                             {% endif %}
@@ -366,6 +480,21 @@ h1 {
 	</section>
 	<!-- CONTENT -->
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    // Attach click event to all rows with the class 'clickable-row'
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+        row.addEventListener('click', function() {
+            // Get the URL from the data-href attribute
+            window.location.href = row.getAttribute('data-href');
+        });
+    });
+});
+
+
+
+
+
+
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
         
         allSideMenu.forEach(item=> {

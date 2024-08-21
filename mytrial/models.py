@@ -31,6 +31,13 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class CaseFile(models.Model):
+    FORM_TYPE_CHOICES = [
+        ('rent_restriction', 'Rent Restriction'),
+        ('business_premises', 'Business Premises'),
+        ('rent_tribunal', 'Rent Tribunal'),
+        ('cooperative_tribunal', 'Cooperative Tribunal'),
+    ]
+
     STATUS_CHOICES = [
         ('in_progress', 'In Progress'),
         ('in_review', 'In Review'),
@@ -39,10 +46,9 @@ class CaseFile(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tenant = models.CharField(max_length=100)
+    user_type = models.CharField(max_length=100)
     postal_address = models.CharField(max_length=255)
     telephone_number = models.CharField(max_length=15)
-    landlord_name = models.CharField(max_length=100)
     agent = models.CharField(max_length=100, blank=True)
     caretaker = models.CharField(max_length=100, blank=True)
     auctioneer = models.CharField(max_length=100, blank=True)
@@ -55,6 +61,11 @@ class CaseFile(models.Model):
     ocs_police_station = models.CharField(max_length=100, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_progress')
     created_at = models.DateTimeField(default=timezone.now)
+    file_upload = models.FileField(upload_to='case_files/', blank=True, null=True)  
+    form_type = models.CharField(max_length=30, choices=FORM_TYPE_CHOICES, default='rent_restriction')
+
+
+
 
     def __str__(self):
         return f"Case File {self.id} by {self.user.username}"

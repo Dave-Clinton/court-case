@@ -111,12 +111,43 @@
     <div class="comp-container">
 
         <h1>Details</h1>
-        <form method="post" action="{% url 'details' %}">
-            {% csrf_token %}
+         
+    <form id="detailsForm" method="post" action="{% url 'details' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="form_type">Select the type of form</label>
+                    <select id="form_type" name="form_type" required>
+                        <option value="">--Select--</option>
+                        <option value="rent_restriction">Rent Restriction</option>
+                        <option value="business_premises">Business Premises</option>
+                        <option value="rent_tribunal">Rent Tribunal</option>
+                        <option value="cooperative_tribunal">Cooperative Tribunal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input_option">Would you like to upload a document or fill the form manually?</label>
+                    <select id="input_option" name="input_option" onchange="toggleForm()">
+                        <option value="form">Fill the Form Manually</option>
+                        <option value="upload">Upload a Document</option>
+                    </select>
+                </div>
+
+                 <!-- Document Upload Section -->
+        <div id="upload_section" class="form-group" style="display: none;">
+              <label for="file_upload">Upload Document:</label>
+             <input type="file" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx">
+        </div>
+        <div id="form_section">
+
             <div class="form-group">
-                <label for="tenant">TENANT:</label>
-                <input type="text" id="tenant" name="tenant" required>
+                <label for="user_type">Are You A tenant Or a LandLord</label>
+                <select id="user_type" name="user_type" required>
+                    <option value="">--Select--</option>
+                    <option value="tenant">Tenant</option>
+                    <option value="landlord">Landlord</option>
+                </select>
             </div>
+           
             <div class="form-group">
                 <label for="postal_address">POSTAL ADDRESS:</label>
                 <input type="text" id="postal_address" name="postal_address" required>
@@ -125,10 +156,7 @@
                 <label for="telephone_number">TELEPHONE NUMBER:</label>
                 <input type="text" id="telephone_number" name="telephone_number" required>
             </div>
-            <div class="form-group">
-                <label for="landlord_name">LANDLORD’S NAME:</label>
-                <input type="text" id="landlord_name" name="landlord_name" required>
-            </div>
+            
             <div class="form-group">
                 <label for="agent">AGENT:</label>
                 <input type="text" id="agent" name="agent">
@@ -169,12 +197,27 @@
                 <label for="ocs_police_station">O.C.S. POLICE STATION:</label>
                 <input type="text" id="ocs_police_station" name="ocs_police_station">
             </div>
-            <button type="submit" >Validate and Save</button>
+         </div>
 
+            <button type="submit" >Validate and Save</button>
         </form>
     </div>
     
-
+    <script>
+        function toggleForm() {
+            const inputOption = document.getElementById('input_option').value;
+            const formSection = document.getElementById('form_section');
+            const uploadSection = document.getElementById('upload_section');
+    
+            if (inputOption === 'upload') {
+                formSection.style.display = 'none';
+                uploadSection.style.display = 'block';
+            } else {
+                formSection.style.display = 'block';
+                uploadSection.style.display = 'none';
+            }
+        }
+    </script>
     
 
 
