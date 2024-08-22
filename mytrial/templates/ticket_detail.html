@@ -104,7 +104,6 @@ body {
     <p>
       <a href="{% url 'download_ticket_document' ticket.id %}" class="btn btn-primary">Download Document</a>
 
-      <a href="{{ ticket.document.url }}" class="btn-primary btn-disabled" download="{{ ticket.document.name }}">Download Document</a>
   </p>
     <p><strong>Created:</strong> {{ ticket.created_at }}</p>
     <div class="button-container">
