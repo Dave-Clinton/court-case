@@ -97,6 +97,7 @@ body {
     
 </head>
 <body>
+  <div style="padding-top: 80px;">
     <div class="screenshot-overlay"></div>
     <div class="watermark">Confidential</div>
    <div class="ticket-details">
@@ -118,6 +119,8 @@ body {
     {% endif %}
    </div>
    </div>
+  </div>
+   
     <script>
         // Check if payment has been made
         const paymentMade = "{{ request.session.payment_made|default_if_none:'false' }}" === "True";
