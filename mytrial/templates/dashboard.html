@@ -184,7 +184,6 @@ h1 {
 }
 }
 
-/* Flex container for the filter section */
 #filter-section {
     margin: 20px 0;
     padding: 15px;
@@ -193,70 +192,51 @@ h1 {
     border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* Space between items */
+    gap: 15px;
 }
 
-/* Styling for individual filter form elements */
+#filter-section form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
 #filter-section form div {
-    flex: 1 1 auto; /* Allow items to grow and shrink as needed */
-    min-width: 150px; /* Minimum width for each input */
+    flex: 1 1 200px; /* Flex-grow, flex-shrink, and flex-basis */
+    min-width: 150px; /* Minimum width for smaller screens */
 }
 
-/* Label styling */
-#filter-section label {
+#filter-section form label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
 }
 
-/* Input styling */
-#filter-section input {
+#filter-section form input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding in width calculation */
+    box-sizing: border-box;
 }
 
-/* Button styling */
-#filter-section button {
-    flex: 1 1 auto; /* Button adjusts with the content */
-    padding: 10px 20px;
-    color: #fff;
+#filter-section .btn {
+    align-self: center;
     background-color: #007bff;
     border: none;
-    border-radius: 4px;
+    color: #fff;
     cursor: pointer;
     font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
 }
 
-/* Button hover effect */
-#filter-section button:hover {
-    background-color: #0056b3;
+#filter-section .btn:hover {
+    background-color: #0069d9;
 }
 
-/* Responsive adjustments */
-@media (min-width: 600px) {
-    #filter-section {
-        flex-direction: row; /* Align items horizontally on medium screens */
-    }
-    #filter-section form div {
-        flex: 1 1 45%; /* Two items per row with some margin */
-    }
-    #filter-section button {
-        flex: 1 1 100%; /* Full width on small screens */
-    }
-}
 
-@media (min-width: 900px) {
-    #filter-section {
-        flex-direction: row; /* Ensure row direction on large screens */
-    }
-    #filter-section form div {
-        flex: 1 1 22%; /* Four items per row on larger screens */
-    }
-}
- 
+
 /* Add this CSS to your stylesheet */
 .view-case {
     display: inline-block;
@@ -276,6 +256,10 @@ h1 {
 
 th{
     padding:30px;
+}
+td{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200;
 }
 
  </style>
@@ -385,7 +369,7 @@ th{
             <input type="text" id="first_name" name="first_name" value="{{ request.GET.first_name }}">
         </div>
         <div>
-            <label for="form_type">Station:</label>
+            <label for="form_type">Form_type:</label>
             <input type="text" id="form_type" name="form_type" value="{{ request.GET.form_type }}">
         </div>
         <div>
@@ -411,7 +395,7 @@ th{
 							<tr>
 								<th>Case ID</th>
                                 <th>Client Name</th>
-                                <th>Station</th>
+                                <th>Form_type</th>
                                 <th>User_type</th>
 								<th>Date Created</th>
                                 <th>Status</th>
@@ -458,7 +442,7 @@ th{
                                  </td>
                                  <td>
                                     {% for ticket in case_file.passticket_set.all %}    
-                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case">  <i class="fas fa-eye"></i></a>
+                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case" style="padding-left: 50px;">  <i class="fas fa-eye"></i></a>
                                     {% endfor %}
                                  </td>
                                  <td colspan="6">

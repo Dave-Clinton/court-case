@@ -290,7 +290,7 @@ def homeland(request):
     # Filter case files based on query parameters
     case_files = CaseFile.objects.filter(user=request.user)
     if case_id:
-        case_files = case_files.filter(case_id__icontains=case_id)
+        case_files = case_files.filter(id__icontains=case_id)
     if first_name:
         case_files = case_files.filter(user__profile__first_name__icontains=first_name)
     if form_type:
@@ -367,18 +367,22 @@ def export_case_to_word(request, case_id):
     document.save(response)
     return response
 
-def export_ticket_to_word(request, ticket_id):
+
+from django.http import FileResponse
+
+def download_ticket_document(request, ticket_id):
     ticket = get_object_or_404(PassTicket, id=ticket_id)
-    document = Document()
-    document.add_heading('Ticket Details', 0)
+    
+    # Check if the document exists
+    if ticket.document:
+        response = FileResponse(ticket.document.open('rb'), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = f'attachment; filename={ticket.document.name}'
+        return response
+    else:
+        # Handle case where the document is not available
+        return HttpResponse('No document found for this ticket.', status=404)
 
-    document.add_paragraph(f'Content: {ticket.content}')
-    document.add_paragraph(f'Created At: {ticket.created_at}')
 
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = f'attachment; filename=ticket_{ticket.id}.docx'
-    document.save(response)
-    return response
 
 
 

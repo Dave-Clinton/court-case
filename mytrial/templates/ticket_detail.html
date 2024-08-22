@@ -102,12 +102,13 @@ body {
    <div class="ticket-details">
     <h1>Ticket Details</h1>
     <p>
+      <a href="{% url 'download_ticket_document' ticket.id %}" class="btn btn-primary">Download Document</a>
+
       <a href="{{ ticket.document.url }}" class="btn-primary btn-disabled" download="{{ ticket.document.name }}">Download Document</a>
   </p>
     <p><strong>Created:</strong> {{ ticket.created_at }}</p>
     <div class="button-container">
  
-    <!--<a  id="export-btn" href="{% url 'export_ticket_to_word' ticket.id %}" class="btn-primary btn-disabled">Export as Word</a>-->
 
     <a  id="payment-btn" href="{% url 'make_payment' ticket.id %}" class="btn-primary ">Make Payment</a>
    

@@ -26,10 +26,12 @@ urlpatterns = [
         path('ticket/<int:ticket_id>/', views.ticket_detail, name='ticket_detail'),
         path('case/<int:case_id>/', views.case_detail, name='case_detail'),
         path('case/export/<int:case_id>/', views.export_case_to_word, name='export_case_to_word'),
-        path('ticket/export/<int:ticket_id>/', views.export_ticket_to_word, name='export_ticket_to_word'),
         path('make-payment/<int:ticket_id>/', views.make_payment, name='make_payment'),
         path('capture-payment/', views.capture_payment, name='capture_payment'),
         path('make_payment/<int:ticket_id>/', views.make_payment, name='make_payment'),
+        path('download-ticket/<int:ticket_id>/', views.download_ticket_document, name='download_ticket_document'),
+
+
 
         ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:

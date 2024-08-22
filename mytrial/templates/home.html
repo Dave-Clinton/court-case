@@ -78,6 +78,10 @@
 th{
     padding:30px;
 }
+td{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200;
+}
 
 </style>
 	<title>techhub</title>
@@ -208,7 +212,7 @@ th{
                         <input type="text" id="first_name" name="first_name" value="{{ request.GET.first_name }}">
                     </div>
                     <div>
-                        <label for="station">Station:</label>
+                        <label for="station">Form_Type:</label>
                         <input type="text" id="form_type" name="form_type" value="{{ request.GET.form_type }}">
                     </div>
                     <div>
@@ -232,7 +236,7 @@ th{
 						<thead>
 							<tr>
 								<th>Order ID </th>
-                                <th>Station</th>
+                                <th>Form_type</th>
                                 <th>User_type</th>
 								<th>Status</th>
                                 <th>Created at</th>
@@ -245,13 +249,13 @@ th{
 						<tbody>
                             {% for case in case_files %}
 
-                            <tr class="clickable-row" data-href="{% url 'case_detail' case_file.id %}">
+                            <tr class="clickable-row" data-href="{% url 'case_detail' case.id %}">
 
-                                <td>{{ case.id }}</td>
-                                <td>
+                                <td style="padding-left:40px;">{{ case.id }}</td>
+                                <td style="padding-left:30px;">
                                     {{ case.form_type }} <!-- Display the form_type field -->
                                 </td>
-                                <td>
+                                <td style="padding-left:40px;">
                                     {% if case.user_type == 'tenant' %}
                                         Tenant
                                     {% elif case.user_type == 'landlord' %}
@@ -271,7 +275,7 @@ th{
                                     {% else %}
                                         <button class="button-status" id="button-completed">{{ case.status }}</button>
                                     {% endif %}
-                                </td>
+                                </td style="padding-left:20px;">
                                 <td>{{ case.created_at }}</td>
                                
                                 <td>
@@ -280,7 +284,7 @@ th{
                                             {% if item.tickets %}
                                                 <ul>
                                                     {% for ticket in item.tickets %}
-                                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case">  <i class="fas fa-eye"></i> </a>                       
+                                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case" style="padding-left: 50px;">  <i class="fas fa-eye"></i> </a>                       
                                                     {% empty %}
                                                         <li>No tickets available.</li>
                                                     {% endfor %}

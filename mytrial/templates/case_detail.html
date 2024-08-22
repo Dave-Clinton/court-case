@@ -94,9 +94,12 @@ h1 {
 <body>
     <div class="container">
         <h1>Case File Details</h1>
+            <h1><strong>Name:</strong> {{ case.user.profile.first_name }}</h1>
+           <h1><strong>Case Type:</strong> {{ case.form_type }}</h1>
+           <h1><strong>Case ID:</strong> {{ case.id }}</h1>
         <div class="details">
-            <p><strong>Name:</strong> {{ case.user.profile.first_name }}</p>
-            <p><strong>Case Type:</strong> {{ case.form_type }}</p>
+           
+            
             {% if case.document %}
                 <p><strong>Uploaded Document:</strong> 
                 <a href="{{ case.document.url }}" download="{{ case.document.name }}" class="btn btn-download">Download Document</a></p>
