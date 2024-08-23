@@ -236,8 +236,8 @@ td{
                                 <th>User_type</th>
 								<th>Status</th>
                                 <th>Created at</th>
-                                <th> Applications</th>
                                 <th>Payment History</th>
+                                <th> Download <br>Document/Applications</th>
                               
 
 							</tr>
@@ -273,24 +273,6 @@ td{
                                     {% endif %}
                                 </td style="padding-left:20px;">
                                 <td>{{ case.created_at }}</td>
-                               
-                                <td>
-                                    {% for item in case_tickets %}
-                                        {% if item.case.id == case.id %}
-                                            {% if item.tickets %}
-                                                <ul>
-                                                    {% for ticket in item.tickets %}
-                                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case" style="padding-left: 50px;">  <i class="fas fa-eye"></i> </a>                       
-                                                    {% empty %}
-                                                        <li>No tickets available.</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% else %}
-                                                No tickets available.
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </td> 
                                 <td>
                                     {% for item in case_tickets %}
                                         {% if item.case.id == case.id %}
@@ -308,6 +290,24 @@ td{
                                         {% endif %}
                                     {% endfor %}
                                 </td>				
+                                <td>
+                                    {% for item in case_tickets %}
+                                        {% if item.case.id == case.id %}
+                                            {% if item.tickets %}
+                                                <ul>
+                                                    {% for ticket in item.tickets %}
+                                                    <a href="{% url 'ticket_detail' ticket.id %}" class="view-case" style="padding-left: 50px;">  <i class="fas fa-eye"></i> </a>                       
+                                                    {% empty %}
+                                                        <li>No tickets available.</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                No tickets available.
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td> 
+                               
 							</tr>
                             {% endfor %}
 

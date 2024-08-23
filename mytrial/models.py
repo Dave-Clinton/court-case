@@ -57,6 +57,8 @@ class CaseFile(models.Model):
     year_of_entry = models.CharField(max_length=100, blank=True)
     deposit_paid = models.CharField(max_length=100, blank=True)
     cause_of_action = models.CharField(max_length=255, blank=True)
+    tenant_name = models.CharField(max_length=255, blank=True)
+    landlord_name = models.CharField(max_length=255, blank=True)
     problem = models.TextField(blank=True)
     ocs_police_station = models.CharField(max_length=100, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_progress')

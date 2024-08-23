@@ -349,6 +349,8 @@ def export_case_to_word(request, case_id):
     document.add_paragraph(f'Postal Address: {case.postal_address}')
     document.add_paragraph(f'Telephone Number: {case.telephone_number}')
     document.add_paragraph(f'Agent: {case.agent}')
+    document.add_paragraph(f'Tenant_name: {case.tenant_name}')
+    document.add_paragraph(f'Landlord_name: {case.landlord_name}')
     document.add_paragraph(f'Caretaker: {case.caretaker}')
     document.add_paragraph(f'Auctioneer: {case.auctioneer}')
     document.add_paragraph(f'Duration of Stay: {case.duration_of_stay}')
@@ -463,6 +465,8 @@ def details(request):
             # Handle manual form submission
             user_type = request.POST.get('user_type')
             postal_address = request.POST.get('postal_address')
+            landlord_name = request.POST.get('landlord_name')
+            tenant_name = request.POST.get('tenant_name')
             telephone_number = request.POST.get('telephone_number')
             agent = request.POST.get('agent', '')
             caretaker = request.POST.get('caretaker', '')
@@ -481,6 +485,8 @@ def details(request):
                 postal_address=postal_address,
                 telephone_number=telephone_number,
                 agent=agent,
+                tenant_name=tenant_name,
+                landlord_name=landlord_name,
                 caretaker=caretaker,
                 auctioneer=auctioneer,
                 duration_of_stay=duration_of_stay,

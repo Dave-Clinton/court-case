@@ -326,7 +326,7 @@ td{
                                         <th>User_type</th>
                                         <th>Date Created</th>
                                         <th>Status</th>
-                                        <th>Applications</th>
+                                        <th> Download <br>Document/Applications</th>
                                         <th>Actions</th>
                                         
 
@@ -337,12 +337,12 @@ td{
                                     <tr class="clickable-row" data-href="{% url 'case_detail' case_file.id %}">
 
                                         <td style="padding-left: 30px;">{{ case_file.user.profile.first_name  }}</td>
-                                        <td> {{ case.form_type }} </td>
+                                        <td> {{ case_file.form_type }} </td>
                                         <td>{{ case_file.id }}</td>
                                         <td>
-                                            {% if case.user_type == 'tenant' %}
+                                            {% if case_file.user_type == 'tenant' %}
                                                 Tenant
-                                            {% elif case.user_type == 'landlord' %}
+                                            {% elif case_file.user_type == 'landlord' %}
                                                 Landlord
                                             {% else %}
                                                 Unknown

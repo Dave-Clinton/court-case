@@ -30,6 +30,8 @@ class CaseFileAdmin(admin.ModelAdmin):
         'ocs_police_station', 
         'status', 
         'form_type',
+        'tenant_name',
+        'landlord_name',
         'created_at'
     )
     search_fields = (

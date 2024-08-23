@@ -88,10 +88,11 @@ body {
                 display: none;
             }
         }
-      /*  .btn-disabled {
-    pointer-events: none; /* Prevent clicking */
-    /*opacity: 0.5;  Make the button appear disabled */
-    
+       .btn-disabled 
+    {
+      pointer-events: none; /* Prevent clicking */
+      opacity: 0.5;  
+    }
 
     </style>
     
@@ -103,7 +104,7 @@ body {
    <div class="ticket-details">
     <h1>Ticket Details</h1>
     <p>
-      <a href="{% url 'download_ticket_document' ticket.id %}" class="btn btn-primary">Download Document</a>
+      <a href="{% url 'download_ticket_document' ticket.id %}" class="btn btn-disabled">Download Document</a>
 
   </p>
     <p><strong>Created:</strong> {{ ticket.created_at }}</p>
